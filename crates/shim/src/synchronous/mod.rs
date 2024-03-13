@@ -75,6 +75,7 @@ use crate::{
 };
 
 cfg_unix! {
+    use std::{thread, time};
     use crate::{SOCKET_FD, parse_sockaddr};
     use command_fds::{CommandFdExt, FdMapping};
     use libc::{SIGCHLD, SIGINT, SIGPIPE, SIGTERM};
@@ -472,6 +473,8 @@ pub fn spawn(opts: StartOpts, grouping: &str, vars: Vec<(&str, &str)>) -> Result
             start_listener(&address).map_err(io_error!(e, ""))?
         }
     };
+
+    thread::sleep(time::Duration::from_millis(2 * 1000));
 
     let mut command = Command::new(cmd);
     command.current_dir(cwd).envs(vars).args([
