@@ -474,7 +474,7 @@ pub fn spawn(opts: StartOpts, grouping: &str, vars: Vec<(&str, &str)>) -> Result
         }
     };
 
-    thread::sleep(time::Duration::from_millis(2 * 1000));
+    thread::sleep(time::Duration::from_millis(1 * 1000));
 
     let mut command = Command::new(cmd);
     command.current_dir(cwd).envs(vars).args([
