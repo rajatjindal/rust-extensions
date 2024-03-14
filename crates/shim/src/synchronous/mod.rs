@@ -507,7 +507,7 @@ pub fn spawn(opts: StartOpts, grouping: &str, vars: Vec<(&str, &str)>) -> Result
             .map_err(io_error!(e, "spawn shim"))
             .map(|child| {
                 // Ownership of `listener` has been passed to child.
-                std::mem::forget(_listener);
+                //std::mem::forget(_listener);
                 (child.id(), address)
             })
     }
