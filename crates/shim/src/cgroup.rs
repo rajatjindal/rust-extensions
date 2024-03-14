@@ -95,12 +95,9 @@ fn write_process_oom_score(pid: u32, score: i64) -> Result<()> {
 
 /// Collect process cgroup stats, return only necessary parts of it
 pub fn collect_metrics(pid: u32) -> Result<Metrics> {
-    info!("into collect metrics");
     let mut metrics = Metrics::new();
 
     let cgroup = get_cgroup(pid)?;
-
-    info!("into collect metrics - after get_croup");
 
     // to make it easy, fill the necessary metrics only.
     for sub_system in Cgroup::subsystems(&cgroup) {
