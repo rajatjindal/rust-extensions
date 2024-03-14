@@ -495,8 +495,8 @@ pub fn spawn(opts: StartOpts, grouping: &str, vars: Vec<(&str, &str)>) -> Result
     {
         command
             .stdout(Stdio::null())
-            .stdin(Stdio::null())
-            .stderr(Stdio::null())
+            .stdin(Stdin::null())
+            .stderr(Stderr::null())
             .fd_mappings(vec![FdMapping {
                 parent_fd: _listener.as_raw_fd(),
                 child_fd: SOCKET_FD,
@@ -507,7 +507,7 @@ pub fn spawn(opts: StartOpts, grouping: &str, vars: Vec<(&str, &str)>) -> Result
             .map_err(io_error!(e, "spawn shim"))
             .map(|child| {
                 // Ownership of `listener` has been passed to child.
-                //std::mem::forget(_listener);
+                std::mem::forget(_listener);
                 (child.id(), address)
             })
     }
