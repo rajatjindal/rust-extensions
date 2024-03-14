@@ -95,9 +95,12 @@ fn write_process_oom_score(pid: u32, score: i64) -> Result<()> {
 
 /// Collect process cgroup stats, return only necessary parts of it
 pub fn collect_metrics(pid: u32) -> Result<Metrics> {
+    info!("into collect metrics");
     let mut metrics = Metrics::new();
 
     let cgroup = get_cgroup(pid)?;
+
+    info!("into collect metrics - after get_cgroup");
 
     // to make it easy, fill the necessary metrics only.
     for sub_system in Cgroup::subsystems(&cgroup) {
@@ -188,7 +191,7 @@ fn get_cgroup(pid: u32) -> Result<Cgroup> {
         let cgroup_name = path_parts[2];
         Cgroup::load(
             hierarchies,
-            format!("/sys/fs/cgroup/{namespace}/{cgroup_name}").as_str(),
+            format!("/sys/fs/cgroup/{cgroup_name}").as_str(),
         )
     } else {
         // get container main process cgroup
