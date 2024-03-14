@@ -189,11 +189,16 @@ fn get_cgroup(pid: u32) -> Result<Cgroup> {
         let path_parts: Vec<&str> = parts[1].split('/').collect();
         let namespace = path_parts[1];
         let cgroup_name = path_parts[2];
+        if true {
+            Err(Error::Other(format!("loading v2 cgroup from: /sys/fs/cgroup/{cgroup_name}")))?;
+        }
+        
         Cgroup::load(
             hierarchies,
             format!("/sys/fs/cgroup/{cgroup_name}").as_str(),
         )
     } else {
+        Err(Error::Other(format!("loading v1 cgroup")))?;
         // get container main process cgroup
         let path = get_cgroups_relative_paths_by_pid(pid)
             .map_err(other_error!(e, "get process cgroup"))?;
