@@ -187,11 +187,11 @@ fn get_cgroup(pid: u32) -> Result<Cgroup> {
 
         let parts: Vec<&str> = content.split("::").collect();
         let path_parts: Vec<&str> = parts[1].split('/').collect();
-        // let namespace = path_parts[1];
+        let namespace = path_parts[0];
         let cgroup_name = path_parts[1];
         Cgroup::load(
             hierarchies,
-            format!("/sys/fs/cgroup/{cgroup_name}").as_str(),
+            format!("/sys/fs/cgroup/{namespace}/{cgroup_name}").as_str(),
         )
     } else {
         // get container main process cgroup
