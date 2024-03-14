@@ -183,6 +183,7 @@ fn get_cgroup(pid: u32) -> Result<Cgroup> {
         let content = content.strip_suffix('\n').unwrap_or_default();
 
         let parts: Vec<&str> = content.split("::").collect();
+
         let path_parts: Vec<&str> = parts[1].split('/').collect();
         let namespace = path_parts[0];
         let cgroup_name = path_parts[1];
