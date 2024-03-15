@@ -205,15 +205,15 @@ fn parse_cgroups_v2_path(content: &str) -> std::prelude::v1::Result<String, Erro
     // where 0 is the hierarchy ID, the controller name is ommit in cgroup v2
     // and $PATH is the cgroup path
     // see https://docs.kernel.org/admin-guide/cgroup-v2.html
-    let parts: Vec<&str> = content.split("::").collect();
+    let parts: Vec<&str> = content.splitn( 3, ":").collect();
 
-    if parts.len() < 2 {
+    if parts.len() < 3 {
         return Err(Error::Other(format!("invalid cgroup path: {}", content)));
     }
 
-    if parts[0] == "0" && !parts[1].is_empty() {
+    if parts[0] == "0" && parts[1].is_empty() {
         // Check if parts[2] starts with '/', remove it if present.
-        let path = parts[1].strip_prefix('/').unwrap_or(parts[1]);
+        let path = parts[2].strip_prefix('/').unwrap_or(parts[2]);
         return Ok(format!("/sys/fs/cgroup/{}", path));
     }
 
@@ -377,7 +377,7 @@ mod tests {
     #[test]
     fn test_parse_cgroups_v2_path_empty() {
         let path = "0::";
-        assert!(parse_cgroups_v2_path(path).is_err());
+        assert_eq!(parse_cgroups_v2_path(path).unwrap(), "/sys/fs/cgroup/");
     }
 
     #[test]
