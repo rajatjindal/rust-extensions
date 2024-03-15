@@ -205,7 +205,7 @@ fn parse_cgroups_v2_path(content: &str) -> std::prelude::v1::Result<String, Erro
     // where 0 is the hierarchy ID, the controller name is ommit in cgroup v2
     // and $PATH is the cgroup path
     // see https://docs.kernel.org/admin-guide/cgroup-v2.html
-    let parts: Vec<&str> = content.splitn( 3, ":").collect();
+    let parts: Vec<&str> = content.splitn(3, ":").collect();
 
     if parts.len() < 3 {
         return Err(Error::Other(format!("invalid cgroup path: {}", content)));
